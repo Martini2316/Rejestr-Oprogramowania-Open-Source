@@ -1,6 +1,6 @@
 # 📘 Rejestr Oprogramowania Open-Source
 
-### Autor: [Twój Nick]
+### Autor: Martini2316
 ---
 
 ## 📄 Opis Projektu
@@ -72,3 +72,59 @@ Aplikacja wykorzystuje **AVL Tree** (zbalansowane drzewo binarne) do przechowywa
        "isStable": "Tak"
      }
    ]
+2. **Format TXT** Plik TXT powinien być sformatowany jako CSV z nagłówkiem:
+   ```CSV
+   id,name,version,releaseDate,licenseType,language,contributors,isStable
+   1,VSCode,1.60,2021-09-01,MIT,JavaScript,30,Tak
+
+   ```
+   Uwaga: Jeśli w bazie są już dane, aplikacja zapyta, czy chcesz nadpisać istniejące dane, aby uniknąć ich utraty.
+
+3. Eksportowanie
+   Po wybraniu opcji eksportu użytkownik może zapisać dane jako:
+
+   JSON – z pełną strukturą danych.
+   TXT – format CSV.
+
+4.💬 Wyjaśnienie Kluczowych Funkcji
+
+   **Dodawanie Rekordu**
+   Aplikacja pozwala na ręczne dodanie rekordu lub dodanie losowego rekordu z ustalonej listy wartości.
+   **Usuwanie Rekordu**
+   Usuwa rekord na podstawie unikalnego ID. W przypadku usuwania przez konsolę należy użyć /mdel <ID>.
+   **Wyszukiwanie Rekordu**
+   Funkcja wyszukiwania pozwala znaleźć rekord według ID lub nazwy.
+   Rekordy można wyszukiwać bezpośrednio w tabeli lub za pomocą komendy /mfind <ID lub Nazwa>.
+   **Importowanie i Eksportowanie**
+   Import: Wybierz plik JSON lub TXT. Aplikacja zresetuje aktualne dane i załaduje nowe rekordy z wybranego pliku.
+   Eksport: Aplikacja generuje plik o nazwie i formacie wybranym przez użytkownika.
+
+5. 📋 Przykłady Użycia Komend
+   ```bash
+   # Dodanie rekordu
+   /madd React 17.0.2 2021-08-10 MIT JavaScript 50 Tak
+   
+   # Wyszukanie rekordu o nazwie 'VSCode'
+   /mfind VSCode
+   
+   # Usunięcie rekordu o ID 3
+   /mdel 3
+   
+   # Eksport danych do pliku "dane.txt"
+   /mexport dane txt
+   
+   # Import danych z wybranego pliku
+   /mimport
+   ```
+6. 🛠️ Technologie
+   
+   JavaScript: Logika aplikacji i operacje na AVL Tree.
+   HTML/CSS: Interfejs użytkownika, okna dialogowe.
+   AVL Tree: Struktura danych dla efektywnego zarządzania rekordami.
+   JSON/TXT: Formaty eksportu i importu danych.
+
+7. 📌 Podsumowanie
+   
+   Projekt ten jest solidnym narzędziem do zarządzania bazą danych oprogramowania open-source. Obsługuje szeroki zakres operacji, w tym zarządzanie rekordami przez GUI oraz          konsolę komend. Dzięki AVL Tree aplikacja jest skalowalna i zapewnia wysoką wydajność nawet przy większej liczbie rekordów.
+   
+   Dziękuje za korzystanie z Rejestru Oprogramowania Open-Source! Jeśli masz pytania lub sugestie, skontaktuj się z autorem projektu.

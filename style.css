@@ -1,0 +1,145 @@
+/* Ogólne ustawienia */
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: Arial, sans-serif;
+}
+
+body {
+display: flex;
+flex-direction: column;
+align-items: center;
+background-color: #f4f4f9;
+color: #333;
+}
+
+header {
+width: 100%;
+display: flex;
+justify-content: space-between;
+align-items: center;
+background-color: #333;
+color: white;
+padding: 1rem;
+}
+
+header h1 {
+font-size: 1.5rem;
+}
+
+header nav button {
+background: #007bff;
+border: none;
+color: white;
+padding: 0.5rem 1rem;
+margin-left: 0.5rem;
+cursor: pointer;
+margin-right: 1rem;
+}
+
+header nav button:hover {
+background: #0056b3;
+}
+
+.hidden {
+display: none;
+}
+
+main {
+width: 90%;
+margin-top: 2rem;
+display: flex;
+justify-content: space-between;
+}
+
+.form-section, .table-section {
+width: 45%;
+margin-bottom: 2rem;
+}
+
+h2 {
+font-size: 1.25rem;
+margin-bottom: 0.5rem;
+}
+
+form label {
+display: block;
+margin: 0.5rem 0 0.25rem;
+}
+
+form input, form select, form button, .sub-buttons button {
+width: 100%;
+padding: 0.5rem;
+margin-bottom: 1rem;
+border: 1px solid #ccc;
+border-radius: 4px;
+}
+
+table {
+width: 100%;
+border-collapse: collapse;
+max-height: 500px; /* Zwiększona wysokość tabeli */
+display: block;
+}
+
+table th, table td {
+border: 1px solid #ddd;
+padding: 0.75rem;
+text-align: left;
+}
+
+table th {
+background-color: #007bff;
+color: white;
+font-size: 15px;
+text-align: left;
+}
+
+tbody {
+display: block;
+max-height: 550px; /* Zwiększona wysokość tabeli */
+overflow-y: auto;
+}
+
+thead, tbody tr {
+display: table;
+width: 100%;
+table-layout: fixed;
+}
+
+#consoleView {
+width: 90%;
+margin-top: 2rem;
+}
+
+#consoleOutput {
+height: 300px;
+overflow-y: auto;
+background-color: #222;
+color: #0f0;
+padding: 1rem;
+margin-bottom: 1rem;
+border-radius: 5px;
+}
+
+#consoleInput {
+width: 100%;
+padding: 0.75rem;
+border: 1px solid #333;
+border-radius: 4px;
+}
+
+.fileUse{
+    margin-left: 7rem;
+    background-color: rgb(155, 142, 58);
+}
+.fileUse2{
+    background-color: rgb(200, 67, 67);
+}
+.fileUse:hover{
+    background-color: rgb(111, 102, 43);
+}
+.fileUse2:hover{
+    background-color: rgb(134, 47, 47);
+}

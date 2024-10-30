@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rejestr Oprogramowania Open-Source</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Górna belka nawigacyjna -->
+  <header>
+    <h1>Rejestr Oprogramowania Open-Source</h1>
+    <nav>
+      <button id="mainViewBtn">Główna Strona</button>
+      <button id="consoleViewBtn">Konsola</button>
+      <button id="addViewBtn">Dodaj</button>
+      <button id="deleteViewBtn">Usuń</button>
+      <button id="findViewBtn">Znajdź</button>
+      <button id="importBtn" class="fileUse">Import</button>
+      <button id="exportBtn" class="fileUse2">Eksport</button>
+    </nav>
+  </header>
+
+  <!-- Główna Strona (Widok Graficzny) -->
+  <main id="mainView">
+    <section class="table-section">
+      <h2>Lista Oprogramowania</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nazwa</th>
+            <th>Wersja</th>
+            <th>Data Wydania</th>
+            <th>Typ Licencji</th>
+            <th>Język</th>
+            <th>Współ Twór.</th>
+            <th>Stabilna</th>
+          </tr>
+        </thead>
+        <tbody id="softwareTableBody">
+          <!-- Wiersze z danymi będą tutaj dodawane dynamicznie -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Formularze: Dodaj, Usuń, Znajdź -->
+    <section class="form-section" id="formContainer">
+      <div id="addFormContainer" class="form-content">
+        <h2>Dodaj Nowe Oprogramowanie</h2>
+        <form id="addForm">
+          <label for="softwareName">Nazwa Oprogramowania:</label>
+          <input type="text" id="softwareName">
+          
+          <label for="version">Wersja:</label>
+          <input type="text" id="version">
+          
+          <label for="releaseDate">Data Wydania:</label>
+          <input type="date" id="releaseDate">
+          
+          <label for="licenseType">Typ Licencji:</label>
+          <input type="text" id="licenseType">
+          
+          <label for="language">Język Programowania:</label>
+          <input type="text" id="language">
+          
+          <label for="contributors">Liczba Współtwórców:</label>
+          <input type="number" id="contributors">
+          
+          <label for="isStable">Stabilna Wersja:</label>
+          <select id="isStable">
+            <option value="true">Tak</option>
+            <option value="false">Nie</option>
+          </select>
+          
+          <button type="button" id="addButton">Dodaj</button>
+
+          <p>Losuj Rekordy:</p>
+          <input type="number" id="iloscLosow" placeholder="Ilosc">
+          <button type="button" id="losuj">Losuj</button>
+        </form>
+
+        
+
+      </div>
+
+      <div id="deleteFormContainer" class="form-content hidden">
+        <h1>Usuń Rekord</h1><br>
+        <label for="deleteId" id="deleteIDstyle">ID do usunięcia:</label>
+        <input type="number" placeholder="ID" id="deleteId"><br><br>
+        <button id="deleteButton">Usuń</button>
+      </div>
+
+      <div id="findFormContainer" class="form-content hidden">
+        <h1>Znajdź Rekord</h1><br>
+        <label for="searchQuery" id="searchQueryStyle">Szukaj według:</label>
+        <input type="text" id="searchQuery" placeholder="Nazwa/ID/Wersja..."><br><br>
+        <button id="searchButton">Szukaj</button>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Konsola -->
+  <section id="consoleView" class="hidden">
+    <h2>Konsola</h2>
+    <p>Wpisz <code>/mhelp</code>, aby zobaczyć listę komend.</p><br>
+    <div id="consoleOutput"></div>
+    <input type="text" id="consoleInput" placeholder="Wpisz komendę...">
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

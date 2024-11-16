@@ -158,38 +158,136 @@ class AVLTree {
       this.inOrderTraversal(node.right, callback);
     }
   }
+
+  // Nowa metoda do zliczania liczby węzłów w drzewie
+  getTotalNodes() {
+    let count = 0;
+    this.inOrderTraversal(this.root, () => count++);
+    return count;
+  }
 }
+
 
 // Inicjalizacja drzewa AVL
 const avlTree = new AVLTree();
 let recordId = 1;
 
-// Funkcja do wyświetlania rekordu w tabeli
-function displayRecord(id, data) {
-  const tableBody = document.getElementById('softwareTableBody');
-  const newRow = document.createElement('tr');
-  newRow.innerHTML = `
-    <td>${id}</td>
-    <td>${data.name}</td>
-    <td>${data.version}</td>
-    <td>${data.releaseDate}</td>
-    <td>${data.licenseType}</td>
-    <td>${data.language}</td>
-    <td>${data.contributors}</td>
-    <td>${data.isStable}</td>
-  `;
-  tableBody.appendChild(newRow);
-}
+// // Funkcja do wyświetlania rekordu w tabeli
+// function displayRecord(id, data) {
+//   const tableBody = document.getElementById('softwareTableBody');
+//   const newRow = document.createElement('tr');
+//   newRow.innerHTML = `
+//     <td>${id}</td>
+//     <td>${data.name}</td>
+//     <td>${data.version}</td>
+//     <td>${data.releaseDate}</td>
+//     <td>${data.licenseType}</td>
+//     <td>${data.language}</td>
+//     <td>${data.contributors}</td>
+//     <td>${data.isStable}</td>
+//   `;
+//   tableBody.appendChild(newRow);
+// }
 
 // Funkcja do wyczyszczenia tabeli
 function clearTable() {
   document.getElementById('softwareTableBody').innerHTML = '';
 }
 
-// Funkcja do odświeżenia tabeli na podstawie AVL Tree
+const BATCH_SIZE = 1000;
+
+// Funkcja do szybkiego odświeżenia tabeli z użyciem Document Fragment
 function refreshTable() {
-  clearTable();
-  avlTree.inOrderTraversal(avlTree.root, displayRecord);
+  refreshTableProgressively();
+}
+
+function refreshTableProgressively() {
+  const tableBody = document.getElementById('softwareTableBody');
+  const fragment = document.createDocumentFragment(); // Fragment DOM
+  let totalRecords = avlTree.getTotalNodes();
+  let processedRecords = 0;
+
+  tableBody.innerHTML = ''; // Czyszczenie tabeli
+
+  // Tworzymy generator dla AVL Tree
+  const generator = createInOrderGenerator(avlTree.root);
+
+  function renderNextBatch() {
+    let count = 0;
+    while (count < BATCH_SIZE) {
+      const next = generator.next();
+      if (next.done) break;
+
+      const [id, data] = next.value;
+      const newRow = createTableRow(id, data);
+      fragment.appendChild(newRow);
+      count++;
+      processedRecords++;
+    }
+
+    tableBody.appendChild(fragment); // Dodanie obecnej partii do tabeli
+
+    // Aktualizuj licznik postępu
+    updateProgress(processedRecords, totalRecords);
+
+    // Jeśli są jeszcze dane do przetworzenia, kontynuujemy
+    if (processedRecords < totalRecords) {
+      setTimeout(renderNextBatch, 0); // Przełączamy do kolejnej partii
+    }
+  }
+
+  renderNextBatch(); // Start progresywnego renderowania
+}
+
+// Generator do przechodzenia po AVL Tree
+function* createInOrderGenerator(node) {
+  if (!node) return;
+
+  // Rekurencja na lewe poddrzewo
+  yield* createInOrderGenerator(node.left);
+
+  // Przetwarzanie bieżącego węzła
+  yield [node.id, node.data];
+
+  // Rekurencja na prawe poddrzewo
+  yield* createInOrderGenerator(node.right);
+}
+
+// Funkcja do aktualizacji licznika postępu
+function updateProgress(processed, total) {
+  const progressElement = document.getElementById('progressIndicator');
+  if (progressElement) {
+    progressElement.textContent = `Załadowano: ${processed} z ${total} rekordów`;
+  }
+}
+
+// HTML dla licznika postępu (dodaj w HTML)
+const progressContainer = document.createElement('div');
+progressContainer.id = 'progressIndicator';
+document.querySelector('.table-section').appendChild(progressContainer);
+
+
+// Funkcja do tworzenia pojedynczego wiersza tabeli
+function createTableRow(id, data) {
+  const newRow = document.createElement('tr');
+  const columns = [
+    id, 
+    data.name, 
+    data.version, 
+    data.releaseDate, 
+    data.licenseType, 
+    data.language, 
+    data.contributors, 
+    data.isStable
+  ];
+  
+  columns.forEach(content => {
+    const cell = document.createElement('td');
+    cell.textContent = content;
+    newRow.appendChild(cell);
+  });
+
+  return newRow;
 }
 
 // Funkcja do dodania rekordu
@@ -256,29 +354,29 @@ const languages = ["JavaScript", "Python", "Java", "Ruby", "C++", "Go", "Rust", 
 const contributors = ["5", "10", "15", "20", "25", "30", "35", "40", "45", "50"];
 const isStableOptions = ["Tak", "Nie"];
 
-// Funkcja do losowego dodania rekordu
-function addRandomRecord() {
-  const randomName = names[Math.floor(Math.random() * names.length)];
-  const randomVersion = versions[Math.floor(Math.random() * versions.length)];
-  const randomDate = releaseDates[Math.floor(Math.random() * releaseDates.length)];
-  const randomLicense = licenseTypes[Math.floor(Math.random() * licenseTypes.length)];
-  const randomLanguage = languages[Math.floor(Math.random() * languages.length)];
-  const randomContributors = contributors[Math.floor(Math.random() * contributors.length)];
-  const randomIsStable = isStableOptions[Math.floor(Math.random() * isStableOptions.length)];
+// Funkcja szybkiego generowania losowych rekordów
+function generateRandomRecords(count) {
+  const generatedRecords = [];
+  for (let i = 0; i < count; i++) {
+    const randomName = names[Math.floor(Math.random() * names.length)];
+    const randomVersion = versions[Math.floor(Math.random() * versions.length)];
+    const randomDate = releaseDates[Math.floor(Math.random() * releaseDates.length)];
+    const randomLicense = licenseTypes[Math.floor(Math.random() * licenseTypes.length)];
+    const randomLanguage = languages[Math.floor(Math.random() * languages.length)];
+    const randomContributors = contributors[Math.floor(Math.random() * contributors.length)];
+    const randomIsStable = isStableOptions[Math.floor(Math.random() * isStableOptions.length)];
 
-  const data = {
-    name: randomName,
-    version: randomVersion,
-    releaseDate: randomDate,
-    licenseType: randomLicense,
-    language: randomLanguage,
-    contributors: randomContributors,
-    isStable: randomIsStable
-  };
-
-  avlTree.add(recordId, data);
-  refreshTable();
-  recordId++;
+    generatedRecords.push({
+      name: randomName,
+      version: randomVersion,
+      releaseDate: randomDate,
+      licenseType: randomLicense,
+      language: randomLanguage,
+      contributors: randomContributors,
+      isStable: randomIsStable
+    });
+  }
+  return generatedRecords;
 }
 
 function handleAddCommand(command) {
@@ -305,14 +403,36 @@ function handleAddCommand(command) {
   consoleOutput.scrollTop = consoleOutput.scrollHeight;
 }
 
+// Funkcja szybkiego dodawania rekordów do drzewa AVL
+function addRandomRecordsToTree(count) {
+  const records = generateRandomRecords(count);
+  
+  records.forEach(record => {
+    avlTree.add(recordId, record);
+    recordId++;
+  });
+
+  refreshTable();
+  alert(`Dodano ${count} rekordów do bazy.`);
+}
 
 
 // Obsługa przycisku "Losuj"
 document.getElementById('losuj').addEventListener('click', () => {
-  const count = parseInt(document.getElementById('iloscLosow').value) || 1;
-  for (let i = 0; i < count; i++) {
-    addRandomRecord();
+  const count = parseInt(document.getElementById('iloscLosow').value);
+  
+  if (isNaN(count) || count <= 0) {
+    alert("Proszę wpisać poprawną liczbę rekordów.");
+    return;
   }
+
+  // Wyłącz interfejs podczas dodawania rekordów
+  document.getElementById('losuj').disabled = true;
+
+  setTimeout(() => {
+    addRandomRecordsToTree(count);
+    document.getElementById('losuj').disabled = false; // Włącz interfejs po zakończeniu
+  }, 0);
 });
 
 
